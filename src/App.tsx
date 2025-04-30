@@ -1,5 +1,7 @@
+import Cookies from 'js-cookie';
 import { BookOpen, GraduationCap } from 'lucide-react';
 import { useCallback, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import ExamSetSelector from './components/ExamSetSelector';
 import SearchBar from './components/SearchBar';
 import SearchResults from './components/SearchResults';
@@ -12,6 +14,7 @@ function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [selectedExamSet, setSelectedExamSet] = useState('new-card');
+  const navigate = useNavigate();
 
   const handleSearch = useCallback((query: string) => {
     setSearchQuery(query);
@@ -35,20 +38,39 @@ function App() {
     setSearchResults([]);
   };
 
+  const handleLogout = () => {
+    Cookies.remove('token');
+    navigate('/login');
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-8 px-4 shadow-md">
-        <div className="container mx-auto">
-          <div className="flex items-center justify-center mb-2">
-            <GraduationCap className="w-10 h-10 mr-3" />
-            <h1 className="text-3xl md:text-4xl font-bold">ค้นหาข้อสอบ</h1>
+      <header className="bg-gradient-to-r from-blue-700 to-blue-900 text-white py-8 shadow-md">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col items-center text-center">
+            <div className="flex items-center mb-4">
+              <GraduationCap className="w-10 h-10 mr-3 text-white" />
+              <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight">
+                ระบบค้นหาข้อสอบ
+              </h1>
+            </div>
+            <p className="text-sm md:text-lg text-blue-200 max-w-xl">
+              ระบบค้นหาข้อสอบและเฉลยอัจฉริยะ ช่วยให้คุณค้นหาข้อสอบที่คล้ายกันได้อย่างรวดเร็วและแม่นยำ
+            </p>
           </div>
-          <p className="text-center text-blue-100 mb-6">
-            ระบบค้นหาข้อสอบและเฉลยอัจฉริยะ - ค้นหาข้อสอบที่คล้ายกันได้ง่ายๆ
-          </p>
+
+          <div className="flex justify-end mt-6">
+            <button
+              onClick={handleLogout}
+              className="bg-white text-blue-800 font-semibold px-4 py-2 rounded-lg shadow hover:bg-blue-100 transition-all"
+            >
+              ออกจากระบบ
+            </button>
+          </div>
         </div>
       </header>
+
 
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8 max-w-4xl">
